@@ -1,0 +1,49 @@
+static long inversionAcrossArray(long[] arr, int si, int ei,int mid,  long[] sortedArray){
+        int lsi = si, lei=mid, rsi=mid+1, rei=ei;
+        long count=0;
+        int k=0;
+        while(lsi<=lei && rsi<=rei){
+            if(arr[lsi]>arr[rsi]){
+                count+=(lei-lsi+1);
+                sortedArray[k++]=arr[rsi++];
+            }else{
+                sortedArray[k++]=arr[lsi++];
+            }
+        }
+        
+        while(lsi<=lei){
+            sortedArray[k++]=arr[lsi++];
+        }
+        while(rsi<=rei){
+            sortedArray[k++]=arr[rsi++];
+        }
+        
+        k=0;
+        for(int i=si;i<=ei;i++){
+            arr[i]=sortedArray[k++];
+        }
+        
+        return count;
+    }
+    
+    static long inversionCount(long arr[], int si, int ei, long sortedArray[]){
+        if(si==ei){
+            return 0;
+        }
+        
+        int mid = (si+ei)/2;
+        long lC = inversionCount(arr, si, mid, sortedArray);
+        long rC = inversionCount(arr, mid+1, ei, sortedArray);
+        
+        return lC+rC+inversionAcrossArray(arr, si, ei, mid, sortedArray);
+        
+        
+    }
+    static long inversionCount(long arr[], long N)
+    {
+        // Your Code Here
+        long[] sortedArray = new long[(int)N]; 
+        long count = inversionCount(arr, 0, (int)N-1, sortedArray);
+        
+        return count;
+    }
