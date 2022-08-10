@@ -1,0 +1,52 @@
+void display1D(vector<int> &arr)
+{
+    for (int ele : arr)
+        cout << ele << " ";
+
+    cout << endl;
+}
+
+void display2D(vector<vector<int>> &arr)
+{
+    for (vector<int> &a : arr)
+        display1D(a);
+
+    cout << endl;
+}
+int floodFill(int sr, int sc, vector<vector<int>> &jumpMat, vector<vector<int>> &dir, vector<vector<int>> &ans)
+{
+    int n = jumpMat.size(), m = jumpMat[0].size();
+    if (sr == n - 1 && sc == m - 1)
+    {
+        ans[sr][sc] = 1;
+        display2D(ans);
+        ans[sr][sc] = 0;
+        return 1;
+    }
+
+    int jump = jumpMat[sr][sc];
+    jumpMat[sr][sc] = 0; // block
+    ans[sr][sc] = 1;     // psf
+
+    int count = 0;
+    for (int d = 0; d < dir.size(); d++)
+    {
+        for (int rad = 1; rad <= jump; rad++)
+        {
+            int r = sr + rad * dir[d][0];
+            int c = sc + rad * dir[d][1];
+
+            if (r >= 0 && c >= 0 && r < n && c < m)
+            {
+                if (jumpMat[r][c] != 0)
+                    count += floodFill(r, c, jumpMat, dir, ans);
+            }
+            else
+                break;
+        }
+    }
+
+    jumpMat[sr][sc] = jump; // unblock
+    ans[sr][sc] = 0;        // psf
+    return count;
+}
