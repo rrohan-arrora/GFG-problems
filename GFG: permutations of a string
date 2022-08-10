@@ -1,0 +1,21 @@
+public List<String> find_permutation(String s) {
+        // Code here
+        
+        if(s.length()==0){
+            ArrayList<String> base = new ArrayList<>();
+            base.add("");
+            
+            return base;
+        }
+        List<String> finalAns = new ArrayList<>();
+        for(int i=0;i<s.length();i++){
+            String ch = s.substring(i, i+1);
+            List<String> output = find_permutation(s.substring(0, i) + s.substring(i+1, s.length()));
+            for(String str: output){
+                finalAns.add(ch+str);
+            }
+        }
+        
+        return finalAns;
+        
+    }
