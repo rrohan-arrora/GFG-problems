@@ -1,0 +1,33 @@
+public static int longestPath(int sr, int sc, boolean[][] vis, int[][] dir, String[] dirS, String psf) {
+        int n = vis.length, m = vis[0].length;
+        if (sr == n - 1 && sc == m - 1) {
+            return psf.length();
+        }
+
+        vis[sr][sc] = true; // blocked
+        int maxL = 0;
+        for (int d = 0; d < dir.length; d++) {
+            int r = sr + dir[d][0];
+            int c = sc + dir[d][1];
+
+            if (r >= 0 && c >= 0 && r < n && c < m) {
+                if (!vis[r][c]) {
+                     maxL = Math.max(maxL, longestPath(r, c, vis, dir, dirS, psf+dirS[d]));
+                }
+            }
+        }
+
+        vis[sr][sc] = false; // unblocked
+        return maxL;
+    }
+
+    public static void longestShortestPath() {
+        int[][] dir = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
+        String[] dirS = { "D", "R", "U", "L" };
+
+        boolean[][] vis = new boolean[3][3];
+        // vis[1][1] = vis[1][2] = vis[2][1] = true;
+
+       
+        System.out.println(longestPath(0, 0, vis, dir, dirS, ""));
+    }
