@@ -1,0 +1,21 @@
+public long countComibations(int s[], int target, String str, int si){
+        if(target==0){
+            // System.out.println(str);
+            return 1;
+        }
+        
+        long total=0;
+        for(int i = si; i< s.length; i++){
+            if(target-s[i] >=0){
+                total+=countT(s, target-s[i], str+s[i], i);
+            }
+        }
+        
+        return total;
+    }
+    
+    public long count(int s[], int coinTypes, int target) {
+        // code here
+        return countComibations(s, target, "", 0);
+        
+    }
