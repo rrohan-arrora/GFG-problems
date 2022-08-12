@@ -1,0 +1,29 @@
+public int changeT(int amount, int[] coins, boolean[] vis, String str) {
+        
+        if(amount==0){
+            System.out.println(str);
+            return 1;
+        }
+        
+        int count=0;
+        for(int i=0;i<coins.length;i++){
+            if(amount-coins[i]>=0){
+                if(!vis[i]){
+                    vis[i]=true;
+                    count+=changeT(amount-coins[i], coins, vis, str+coins[i]);  
+                    vis[i]=false; // this is imp
+                    
+                }
+                
+            }
+        }
+        
+        return count;
+        
+    }
+    public int change(int amount, int[] coins) {
+        
+        boolean vis[] = new boolean[coins.length];
+        return changeT(amount, coins, vis, "");
+        
+    }
