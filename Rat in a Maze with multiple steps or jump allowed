@@ -1,0 +1,73 @@
+/*package whatever //do not write package name here */
+
+import java.io.*;
+
+class GFG {
+    
+    public static void display(int[][] ans){
+        for(int i=0;i<ans.length;i++){
+            for(int j=0;j<ans[0].length;j++){
+                System.out.print(ans[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+    
+    // ans array is of same size as of maze and it will store the path. 
+    // 1 represents where we have gone and 0 represent when we have not gone depending
+    // on the jumps value represented by the maze matrix.
+    public static void findPath(int sr, int sc, int dr, int dc, int[][] ans, int[][] maze, int[][] dir){
+        if(sr==dr && sc==dc){
+            // we need to assign 1 at ans here as well since we have reached here only.
+            ans[sr][sc]=1;
+            display(ans);
+            ans[sr][sc]=0;
+            
+            return;
+        }
+        
+        int jump = maze[sr][sc];
+        maze[sr][sc]=0;//mark
+        //at the first loop, we will obviously start from
+        // [0][0], thus, we need to keep it 1 at the start;
+        // afterwards it will be handled by the loop only.
+        ans[sr][sc]=1;
+        
+        for(int i=0;i<dir.length;i++){
+            for(int j=1;j<=jump;j++){
+                int x = sr+(j)*dir[i][0];
+                int y = sc+(j)*dir[i][1];
+            
+                if(x>=0 && y>=0 && x<=dr && y<=dc){
+                    if(maze[x][y]!=0){ // we have to add this condition inside upper if, otherwise, 
+                    //it will break the loop on maze[x][y]!=0 condition as well and if there exists
+                    // any jump value more then the present value, it wont run. Like currect jump was 1 
+                    // and it got false, but highest jump could be 3 which wont be evaluated at first place.
+                        findPath(x, y, dr, dc, ans, maze, dir);
+                    }
+                }else{
+                    break;
+                }
+            }
+            
+        }
+        ans[sr][sc]=0;
+        maze[sr][sc]=jump;//unmark
+        
+        
+    }
+    
+    public static void solveMaze(int[][] maze) {
+        int ans[][] = new int[maze.length][maze[0].length];
+        int[][] dir = { { 1, 0 }, { 0, 1 } };
+        findPath(0, 0, maze.length-1, maze[0].length-1, ans, maze, dir);
+    }
+	public static void main (String[] args) {
+		int maze[][] = { { 2, 1, 0, 0 },
+                    { 3, 0, 0, 1 },
+                    { 0, 1, 0, 1 },
+                    { 0, 0, 0, 1 } };
+ 
+        solveMaze(maze);
+	}
+}
