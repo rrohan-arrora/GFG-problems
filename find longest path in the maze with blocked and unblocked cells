@@ -1,0 +1,51 @@
+/*package whatever //do not write package name here */
+
+import java.io.*;
+
+class GFG {
+    public static class pair{
+        int length;
+        String psf;
+        
+        pair(String psf, int length){
+            this.length = length;
+            this.psf = psf;
+        }
+    }
+    
+    public static pair longestpathinMaze(int sr, int sc, int dr, int dc, boolean[][] vis, int[][] dir, String[] dirS) {
+        if(sr==dr && sc==dc){
+            return new pair("", 0);   
+        }
+        
+        pair myAns = new pair("", -1);
+        vis[sr][sc] = true;
+        
+        for(int i=0;i<dir.length;i++){
+            int x = sr+dir[i][0];
+            int y = sc+dir[i][1];
+            
+            if(x>=0 && y>=0 && x<= dr && y<=dc && !vis[x][y]){
+                pair smallAns = longestpathinMaze(x, y, dr, dc, vis, dir, dirS);
+                
+                if(smallAns.length!=-1 && smallAns.length+1 > myAns.length){
+                    myAns.length = smallAns.length+1;
+                    myAns.psf = dirS[i]+smallAns.psf;
+                }
+            }
+        }
+        
+        vis[sr][sc] = false;
+        
+        return myAns;
+    }
+	public static void main (String[] args) {
+		boolean[][] vis = new boolean[3][3];
+        // vis[1][1]=vis[1][2]=vis[2][1]=true;
+        int[][] dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        String[] dirS = {"D", "R", "U", "L"};
+        pair ans = longestpathinMaze(0, 0, 2, 2, vis, dir, dirS);
+        
+        System.out.println(ans.length);
+	}
+}
